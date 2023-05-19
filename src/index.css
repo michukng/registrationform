@@ -12,7 +12,8 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  background-color: rgb(74, 150, 248);
+  min-height: 100vh;
 }
 
 form {
@@ -20,58 +21,58 @@ form {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  flex-wrap: wrap;
-  border: 1px solid red;
-  margin-top: 15vh;
   height: 30rem;
-  width: 25vw;
+  width: 25rem;
   border-radius: 2em;
+  background-color: rgb(46, 98, 194);
 }
 
 label {
   align-self: flex-start;
-  margin-left: 3.6em;
+  margin-left: 4.1em;
+  margin-bottom: 0.1em;
+  color: white;
 }
 
 input {
-  height: 2em;
+  height: 2.3em;
   width: 20em;
   padding: 0.3em;
 }
 
-input[type="text"], input[type="email"] {
+input {
   margin-bottom: 2em;
 }
 
 .reg-btn {
   cursor: pointer;
   padding: 0.3em;
-  height: 2em;
+  height: 2.3em;
   width: 20em;
-  background-color: transparent;
-
-}
-
-.icon-invisible {
-  cursor: pointer;
-  background-color: transparent;
+  background-color: white;
   border: none;
-  margin-top: -1.5em;
-  margin-right: -18em;
-  margin-bottom: 2em;
-}
-
-.icon-visible {
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  margin-top: -3.5em;
-  margin-right: -18em;
-  margin-bottom: 2em;
+  color: rgb(46, 98, 194);
 }
 
 .p-already-registered {
   font-size: 0.75em;
   margin-left: 10.5em;
   margin-bottom: 1em;
+  color: white  
+}
+
+.off-screen {
+  position: absolute;
+  left: -99999999px;
+}
+
+.instruction {
+  background-color: black;
+  color: white;
+  width: 21em;
+  font-size: 0.8em;
+  margin-top: -1em;
+  margin-bottom: 1.5em;
+  padding: 0.75em;
+  border-radius: 1em;
 }
