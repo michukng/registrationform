@@ -1,9 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
 /* RESET */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* HTML */
+
+html {
+    font-family: 'Nunito', sans-serif;
 }
 
 /* FORM */
@@ -21,7 +29,7 @@ form {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 30rem;
+  height: 40rem;
   width: 25rem;
   border-radius: 2em;
   background-color: rgb(46, 98, 194);
