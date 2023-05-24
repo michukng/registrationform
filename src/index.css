@@ -84,3 +84,29 @@ input {
   padding: 0.75em;
   border-radius: 1em;
 }
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.userIsTaken, .mailIsTaken {
+  display: grid;
+  place-items: center;
+  border: 3px solid red;
+  color:red;
+  background-color: rgb(238, 128, 179);
+  height: 3em;
+  width: 17em;
+  margin-top: -5em;
+  margin-bottom: 2em;
+}

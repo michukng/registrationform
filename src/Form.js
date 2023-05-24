@@ -1,14 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-
-const Form = () => {
+import api from './api/users';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
     const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
     const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/; 
-    const MAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;   
+    const MAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+
+const Form = () => {  
 
     const userRef = useRef();
+
+    const API_URL = 'http://localhost:3500/users'
+    
+    const [data, setData] = useState([]);
 
     const [username, setUsername] = useState('');
     const [validName, setValidName] = useState(false);
@@ -26,9 +31,24 @@ const Form = () => {
     const [validConfPwd, setValidConfPwd] = useState(false);
     const [confPwdFocus, setConfPwdFocus] = useState(false);
 
+    const [userExist, setUserExist] = useState(false);
+    const [mailExist, setMailExist] = useState(false);
+
     useEffect(() => {
         userRef.current.focus();
     }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await api.get(API_URL);
+                setData(response)
+            } catch (err) {
+                console.log(err)
+            }
+        };
+        fetchData();
+    }, [data])
 
     useEffect(() => {
         const result = USER_REGEX.test(username);
@@ -49,13 +69,47 @@ const Form = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    }
-    
+        for (let i=0; i<data.data.length; i++) {
+            if (data.data[i].username.toLowerCase() === username.toLowerCase()) {
+                setUserExist(true);
+                console.log(data.resposne)
+                break
+            } else {
+                setUserExist(false);
+                for (let j=0; j<data.data.length; j++) {
+                    if (data.data[j].mail.toLowerCase() === mail.toLowerCase()) {
+                        setMailExist(true)
+                        break
+                    } else {
+                        setMailExist(false)
+                        if (validName && validMail && validPwd && validConfPwd && !userExist && !mailExist) {
+                            console.log("i")
+                            let i = 0;
+                            i = i+1
+                            console.log(i)
+                        }
+                    };
+                };
+            };
+        };
+        
+        
+    };
+
+
   return (
     <main>
       <form>
+        <p className={userExist ? "userIsTaken" : "hide"}>Nazwa użytkownika jest zajęta!</p>
+        <p className={!userExist && mailExist ? "mailIsTaken" : "hide"}>Adres mail jest zajęty!</p>
         <label htmlFor="Login">
             Nazwa użytkownika
+            <span className={validName ? "valid" : "hide"}>
+                <FontAwesomeIcon icon={faCheck} />
+            </span>
+            <span className={validName || !username ? "hide" : "invalid"}>
+                <FontAwesomeIcon icon={faTimes} />
+            </span>
         </label>
         <input
             type="text"
@@ -74,6 +128,12 @@ const Form = () => {
         </p>
         <label htmlFor="mail">
             Mail
+            <span className={validMail ? "valid" : "hide"}>
+                <FontAwesomeIcon icon={faCheck} />
+            </span>
+            <span className={validMail || !mail ? "hide" : "invalid"}>
+                <FontAwesomeIcon icon={faTimes} />
+            </span>
         </label>
         <input
             type='email'
@@ -89,6 +149,12 @@ const Form = () => {
         </p>
         <label htmlFor='password'>
             Hasło
+            <span className={validPwd ? "valid" : "hide"}>
+                <FontAwesomeIcon icon={faCheck} />
+            </span>
+            <span className={validPwd || !pwd ? "hide" : "invalid"}>
+                <FontAwesomeIcon icon={faTimes} />
+            </span>
         </label>
         <input
             type="password"
@@ -105,6 +171,12 @@ const Form = () => {
         </p>
         <label htmlFor="confirm password">
             Powtórz hasło
+            <span className={validConfPwd && confPwd? "valid" : "hide"}>
+                <FontAwesomeIcon icon={faCheck} />
+            </span>
+            <span className={validConfPwd || !confPwd ? "hide" : "invalid"}>
+                <FontAwesomeIcon icon={faTimes} />
+            </span>
         </label>
         <input
             type="password"
