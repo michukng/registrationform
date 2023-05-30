@@ -1,16 +1,40 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "username": "Michu",
-            "mail": "michu@michu.com",
-            "password": "Test123"
-        },
-        {
-            "id": 2,
-            "username": "Michdsu",
-            "mail": "test@test.com",
-            "password": "Test123"
-        }
-    ]
+  "users": [
+    {
+      "id": 1,
+      "username": "Michu",
+      "mail": "michu@michu.com",
+      "password": "Test123"
+    },
+    {
+      "id": 2,
+      "username": "Michdsu",
+      "mail": "test@test.com",
+      "password": "Test123"
+    },
+    {
+      "id": 3,
+      "username": "mich",
+      "mail": "test@tst.com",
+      "password": "Qwerty123!"
+    },
+    {
+      "id": 4,
+      "username": "mich1",
+      "mail": "test@tsdt.com",
+      "password": "Qwerty123!"
+    },
+    {
+      "id": 5,
+      "username": "michs",
+      "mail": "tst@tst.com",
+      "password": "Qwerty123!"
+    },
+    {
+      "id": 6,
+      "username": "michu1",
+      "mail": "test@tsat.com",
+      "password": "Qwerty123!"
+    }
+  ]
 }

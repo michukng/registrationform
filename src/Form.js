@@ -14,6 +14,9 @@ const Form = () => {
     const API_URL = 'http://localhost:3500/users'
     
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
     const [username, setUsername] = useState('');
     const [validName, setValidName] = useState(false);
@@ -43,12 +46,14 @@ const Form = () => {
             try {
                 const response = await api.get(API_URL);
                 setData(response)
+                setLoading(false);
             } catch (err) {
                 console.log(err)
+                setError(true);
             }
         };
         fetchData();
-    }, [data])
+    }, [])
 
     useEffect(() => {
         const result = USER_REGEX.test(username);
@@ -67,39 +72,54 @@ const Form = () => {
         setValidConfPwd(match);
     }, [pwd, confPwd]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        for (let i=0; i<data.data.length; i++) {
-            if (data.data[i].username.toLowerCase() === username.toLowerCase()) {
-                setUserExist(true);
-                console.log(data.resposne)
-                break
-            } else {
-                setUserExist(false);
-                for (let j=0; j<data.data.length; j++) {
-                    if (data.data[j].mail.toLowerCase() === mail.toLowerCase()) {
-                        setMailExist(true)
-                        break
-                    } else {
-                        setMailExist(false)
-                        if (validName && validMail && validPwd && validConfPwd && !userExist && !mailExist) {
-                            console.log("i")
-                            let i = 0;
-                            i = i+1
-                            console.log(i)
-                        }
+    useEffect(() => {
+        if (!loading) {
+            for (let i=0; i<data.data.length; i++) {
+                if (data.data[i].username.toLowerCase() === username.toLowerCase()) {
+                    setUserExist(true);
+                    setValidName(false);                   
+                    break
+                } else {
+                    setUserExist(false);
+                    for (let j=0; j<data.data.length; j++) {
+                        if (data.data[j].mail.toLowerCase() === mail.toLowerCase()) {
+                            setMailExist(true);
+                            setValidMail(false);
+                            break
+                        } else {
+                            setMailExist(false)                            
+                        };
                     };
                 };
             };
         };
-        
-        
+    }, [loading, username, mail])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const id = data.data.length ? data.data[data.data.length - 1].id + 1 : 1;
+        const newUser = {
+            id: id,
+            username: username,
+            mail: mail,
+            password: confPwd
+        }
+        try {
+            const response = await api.post('/users', newUser);
+            const allUsers = [...data.data, response.data];
+            setData(allUsers);
+            setSuccess(true);
+        } catch(err) {
+            console.log(err.message)
+        }
     };
 
 
   return (
     <main>
+        {!success &&
       <form>
+        {error && <p className='error'>Bardzo proszę odpalić JSON server! Proszę wpisać w konsolę NPX JSON-SERVER -P 3500 -W DATA/DB.JSON</p>}
         <p className={userExist ? "userIsTaken" : "hide"}>Nazwa użytkownika jest zajęta!</p>
         <p className={!userExist && mailExist ? "mailIsTaken" : "hide"}>Adres mail jest zajęty!</p>
         <label htmlFor="Login">
@@ -121,7 +141,7 @@ const Form = () => {
             onFocus={() => setUsernameFocus(true)}
             onBlur={() => setUsernameFocus(false)}
         />
-        <p className={username && usernameFocus && !validName ? "instruction" : "off-screen"}>
+        <p className={username && usernameFocus && !validName && !userExist ? "instruction" : "off-screen"}>
         4 do 25 znaków. <br />
         Nazwa użytkownika musi zaczynać się literą.<br />
         Dozwolone są znaki specjalne.<br />
@@ -144,7 +164,7 @@ const Form = () => {
             onFocus={() => setMailFocus(true)}
             onBlur={() => setMailFocus(false)}
         />
-        <p className={mail && mailFocus && !validMail ? "instruction" : "off-screen"}>
+        <p className={mail && mailFocus && !validMail && !mailExist ? "instruction" : "off-screen"}>
         Nieprawidłowy format maila.<br />
         </p>
         <label htmlFor='password'>
@@ -191,12 +211,14 @@ const Form = () => {
         </p>
         <p className='p-already-registered'>Masz już konto? Zaloguj się.</p>
         <button
+            disabled={!validName || !validMail || !validPwd || !validConfPwd || userExist || mailExist}
             type="submit" 
             className='reg-btn'
             onClick={handleSubmit}>
             Zarejestruj się
         </button>
-      </form>
+      </form>}
+      {success && <p>Konto zostało założone!</p>}
     </main>
   )
 }

@@ -1,1 +1,0 @@
-dodać API weryfikujące czy użytkownik jest w bazie

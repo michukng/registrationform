@@ -110,3 +110,20 @@ input {
   margin-top: -5em;
   margin-bottom: 2em;
 }
+
+.error {
+  display: grid;
+  place-items: center;
+  border: 3px solid red;
+  color:red;
+  background-color: rgb(238, 128, 179);
+  height: 6em;
+  width: 17em;
+  margin-top: -5em;
+  margin-bottom: 2em;
+}
+
+button:disabled {
+  cursor:not-allowed;
+  background-color: grey;
+}
